@@ -1,0 +1,21 @@
+<!--*************************************** Update this code *******************************************-->
+
+<!--Adds an event listener for the ionSwipe event. This event will be trig‐gered when the user has performed 
+        the full-swipe gesture calling the removeTask function-->
+<ion-item-options side="right" (ionSwipe)="removeTask(slidingItem, task)">
+
+<!--*************************************** Update this code *******************************************-->
+
+    
+
+<!--*************************************** Update this code *******************************************-->
+
+    <!--We need to add an additional property on the button that we want to visually expand as 
+              the ionSwipe gesture is performed-->
+    <button ion-button icon-only expandable (click)="removeTask(slidingItem, task)" color="danger">
+        <ion-icon name="trash"></ion-icon>
+    </button>
+
+<!--*************************************** Update this code *******************************************-->
+
+</ion-item-options>

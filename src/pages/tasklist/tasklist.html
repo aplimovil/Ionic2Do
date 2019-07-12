@@ -1,14 +1,59 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar color="primary">
+    <!-- Title for the page -->
     <ion-title>
-      Ionic Blank
+      Tasks
     </ion-title>
+    <!-- Adds an Add Item button to the navigation bar at the end, far from header;
+      icon-left directive adds a small amount of padding to the left of the icon;
+      if you have an icon only button, then add icon-only directive -->
+    <ion-buttons end>
+      <button ion-button icon-left (click)="addItem()">
+        <ion-icon name="add"></ion-icon>
+        Add Item
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
+<!-- The <ion-content> tag serves as our container for content. It will automatically 
+  scroll if the content exceeds the viewport -->
 <ion-content padding>
-  The world is your oyster.
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
+  <!-- Next, we have the <ion-list>, which is used to display rows of information. 
+    In our case, this will be rows of tasks-->
+  <ion-list>
+    <!-- We are going to loop through an array named tasks and set each item into a locally 
+      scoped variable named task. Using the data-binding syntax, {{task.title}}, we will render 
+      out each task’s title string -->
+    <!-- <ion-item-sliding> reveals a set of buttons by swiping from right to left on a row-->
+    <!-- #slidingItem is a local variable that represents the sliding component -->
+    <ion-item-sliding #slidingItem *ngFor="let task of tasks">
+      <!-- Uses the ngClass Angular directive to apply conditionally the taskDone class style
+      if task status is set to done -->
+      <ion-item [ngClass]="{taskDone: task.status == 'done'}">
+        {{task.title}}
+      </ion-item>
+      <!-- <ion-item-options> component contains our buttons that will be shown when we swipe the row. 
+        This component supports having these option buttons be on the right, left or even both sides. 
+        Simply add side='right’ to the ion-item-options that you want revealed with the user swipes 
+        from the right to left. For items that you want to show when the user swipes from left to right, 
+        define it as side='left’. If you do not include a side, it will default to the right side -->
+      <!--Adds an event listener for the ionSwipe event. This event will be trig‐gered when the user has performed 
+        the full-swipe gesture calling the removeTask function-->
+      <ion-item-options side="right" (ionSwipe)="removeTask(slidingItem, task)">
+        <!-- For this app, we will have a button to mark a task as done, and another button to remove it 
+          from the list completely. The markup is just the standard <button> tag. Each button will have 
+            a click function that passes it the reference to that row’s task and use an icon from the IonIcon library-->
+        <!--slidingItem variable is passed as parameter to update the sliding item behavior in the controller -->
+        <button ion-button icon-only (click)="markAsDone(slidingItem, task)" color="secondary">
+          <ion-icon name="checkmark"></ion-icon>
+        </button>
+        <!--We need to add an additional property on the button that we want to visually expand as 
+          the ionSwipe gesture is performed-->
+        <button ion-button icon-only expandable (click)="removeTask(slidingItem, task)" color="danger">
+          <ion-icon name="trash"></ion-icon>
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
 </ion-content>

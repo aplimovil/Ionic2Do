@@ -1,0 +1,13 @@
+<ion-item-sliding #slidingItem *ngFor="let task of tasks">
+
+  <!--******************************* Update this code ********************************-->
+
+  <!-- Uses the ngClass Angular directive to apply conditionally the taskDone class style
+      if task status is set to done -->
+  <ion-item [ngClass]="{taskDone: task.status == 'done'}">
+    {{task.title}}
+  </ion-item>
+
+  <!--******************************* Update this code ********************************-->
+
+</ion-item-sliding>

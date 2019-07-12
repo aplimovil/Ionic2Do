@@ -1,0 +1,29 @@
+<ion-header>
+    <ion-navbar>
+        <!--*********************** Update this code ***********************-->
+
+        <!-- Title for the page -->
+        <ion-title>
+            Tasks
+        </ion-title>
+
+        <!--*********************** Update this code ***********************-->
+
+
+
+        <!--************************* Add this code ************************-->
+
+        <!-- Adds an Add Item button to the navigation bar at the end, far from header; 
+            icon-left directive adds a small amount of padding to the left of the icon; 
+            if you have an icon only button, then add icon-only directive -->
+        <ion-buttons end>
+            <button ion-button icon-left (click)="addItem()">
+                <!-- Uses an add icon from the ionic collection -->
+                <ion-icon name="add"></ion-icon>
+                Add Item
+            </button>
+        </ion-buttons>
+
+        <!--************************* Add this code ************************-->
+    </ion-navbar>
+</ion-header>

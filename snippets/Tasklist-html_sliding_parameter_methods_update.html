@@ -1,0 +1,22 @@
+<!--********************************************* Update this code ******************************************-->
+
+<!-- #slidingItem is a local variable that represents the sliding component -->
+<ion-item-sliding #slidingItem *ngFor="let task of tasks">
+
+    <!--********************************************* Update this code ******************************************-->
+
+    <ion-item-options side="right">
+
+        <!--********************************************* Update this code ******************************************-->
+
+        <!--slidingItem variable is passed as parameter to update the sliding item behavior in the controller -->
+        <button ion-button icon-only (click)="markAsDone(slidingItem, task)" color="secondary">
+            <ion-icon name="checkmark"></ion-icon>
+        </button>
+        <button ion-button icon-only (click)="removeTask(slidingItem, task)" color="danger">
+            <ion-icon name="trash"></ion-icon>
+        </button>
+
+        <!--********************************************* Update this code ******************************************-->
+    </ion-item-options>
+</ion-item-sliding>

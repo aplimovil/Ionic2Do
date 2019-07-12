@@ -1,0 +1,17 @@
+
+<!-- ************************************** Update this code **************************************-->
+
+<!-- The <ion-content> tag serves as our container for content. It will automatically 
+  scroll if the content exceeds the viewport -->
+<ion-content padding>
+    <!-- Next, we have the <ion-list>, which is used to display rows of information. 
+          In our case, this will be rows of tasks-->
+    <ion-list>
+        <!-- We are going to loop through an array named tasks and set each item into a locally 
+            scoped variable named task. Using the data-binding syntax, {{task.title}}, we will render 
+            out each task’s title string -->
+        <ion-item *ngFor="let task of tasks">{{task.title}}</ion-item>
+    </ion-list>
+</ion-content>
+
+<!-- ************************************** Update this code **************************************-->

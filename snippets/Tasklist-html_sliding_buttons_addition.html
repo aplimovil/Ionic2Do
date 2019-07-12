@@ -1,0 +1,32 @@
+<ion-content padding>
+    <ion-list>
+
+        <!--************************************************** Update this code *****************************************************-->
+
+        <!-- <ion-item-sliding> reveals a set of buttons by swiping from right to left on a row-->
+        <ion-item-sliding #slidingItem *ngFor="let task of tasks">
+            <ion-item>
+                {{task.title}}
+            </ion-item>
+            <!-- <ion-item-options> component contains our buttons that will be shown when we swipe the row. 
+              This component supports having these option buttons be on the right, left or even both sides. 
+              Simply add side='right’ to the ion-item-options that you want revealed with the user swipes 
+              from the right to left. For items that you want to show when the user swipes from left to right, 
+              define it as side='left’. If you do not include a side, it will default to the right side -->
+            <ion-item-options side="right">
+                <!-- For this app, we will have a button to mark a task as done, and another button to remove it 
+                from the list completely. The markup is just the standard <button> tag. Each button will have 
+                  a click function that passes it the reference to that row’s task and use an icon from the IonIcon library-->
+                <button ion-button icon-only (click)="markAsDone(task)" color="secondary">
+                    <ion-icon name="checkmark"></ion-icon>
+                </button>
+                <button ion-button icon-only (click)="removeTask(task)" color="danger">
+                    <ion-icon name="trash"></ion-icon>
+                </button>
+            </ion-item-options>
+        </ion-item-sliding>
+
+        <!--************************************************** Update this code *****************************************************-->
+
+    </ion-list>
+</ion-content>

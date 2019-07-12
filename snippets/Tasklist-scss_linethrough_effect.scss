@@ -1,0 +1,11 @@
+page-home {
+  /******************************* Add this code ***************************/
+
+  /*Defines a taskDone style class which uses the text-decoration property 
+      to produce a strikeout effect over the text*/
+  .taskDone {
+    text-decoration: line-through;
+  }
+
+  /******************************* Add this code ***************************/
+}
