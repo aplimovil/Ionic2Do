@@ -4,7 +4,7 @@
     be asynchronously fetched. To do so, we just need to include the async pipe. Otherwise, when 
     Ionic/Angular tries to render this template, there isn’t any data defined yet and it will throw 
     an error. By adding the async pipe, Angular knows how to properly handle this information delay -->
-<ion-item-sliding #slidingItem *ngFor="let task of tasks" | async>
+<ion-item-sliding #slidingItem *ngFor="let task of tasks | async">
 
 <!--*************************************** Update this code ***************************************-->
 
