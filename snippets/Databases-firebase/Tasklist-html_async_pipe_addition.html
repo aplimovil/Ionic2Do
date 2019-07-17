@@ -1,0 +1,16 @@
+<!--*************************************** Update this code ***************************************-->
+
+<!--In order to use the FirebaseListObservable array, we need to tell Angular that this data will 
+    be asynchronously fetched. To do so, we just need to include the async pipe. Otherwise, when 
+    Ionic/Angular tries to render this template, there isn’t any data defined yet and it will throw 
+    an error. By adding the async pipe, Angular knows how to properly handle this information delay -->
+<ion-item-sliding #slidingItem *ngFor="let task of tasks" | async>
+
+<!--*************************************** Update this code ***************************************-->
+
+    <!-- Uses the ngClass Angular directive to apply conditionally the taskDone class style
+    if task status is set to done -->
+    <ion-item [ngClass]="{taskDone: task.status == 'done'}">
+        {{task.title}}
+    </ion-item>
+</ion-item-sliding>

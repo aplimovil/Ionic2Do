@@ -1,6 +1,13 @@
 import { Component } from '@angular/core';
 import { NavController, ItemSliding } from 'ionic-angular';
 import { Task } from '../task';
+//Imports AngularFireDatabase component and AngularFireList to hold items
+import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
+//Imports a FirebaseListObservable component to handle database objects
+import { Observable } from 'rxjs/Observable';
+//This component gives you ability to access and customize the device native dialogs.
+import { Dialogs } from '@ionic-native/dialogs/ngx';
+import { Platform } from 'ionic-angular';
 
 @Component({
   //Selector (tag) to use on main page to load the component
@@ -11,31 +18,47 @@ import { Task } from '../task';
 //TaskList component class declaration
 export class TaskListPage {
 
-  //Defines the tasks array as an array of Task objects
-  tasks: Array<Task> = [];
+  //Defines the tasks array as an Observable object (asynchronous connection to db)
+  tasks: Observable<any[]>;
+  //Defines an AngularFireList object to hold data
+  taskList: AngularFireList<Task>;
 
-  constructor(public navCtrl: NavController) {
-
-    //Set our tasks array to some dummy tasks for testing purposes 
-    this.tasks = [
-      { title: 'Milk', status: 'open' },
-      { title: 'Eggs', status: 'open' },
-      { title: 'Syrup', status: 'open' },
-      { title: 'Pancake Mix', status: 'open' }
-    ];
+  //Receives a reference to Firebase remote db
+  //Includes a Dialogs and Platform reference to handle a native Dialog screen
+  constructor(public navCtrl: NavController, public db: AngularFireDatabase, private dialogs: Dialogs, private platform: Platform) {
+    //Return the data in the tasks sub-directory and store them in taskList
+    this.taskList = this.db.list('/tasks');
+    //Synchronize with the remote db
+    this.tasks = this.taskList.valueChanges();
   }
 
-  //Adds a task to the list in the array
+
   addItem() {
-    /*For now, we will use the standard prompt method to display a 
-    dialog to allow the user to enter a new task title*/
-    let theNewTask: string = prompt("New Task");
-
-    //If the dialog text is not empty ...
-    if (theNewTask !== '') {
-
-      //This will be included in a generic object that is pushed onto our tasks array
-      this.tasks.push({ title: theNewTask, status: 'open' });
+    //Checks if running platform is native (Android or iOS Phone)
+    if (this.platform.is('cordova')) {
+      //Displays a native Dialog window according to background SO look and feel
+      this.dialogs.prompt('Add a task', 'Ionic2Do', ['Ok', 'Cancel'], '')
+        .then(
+          theResult => {
+            //If Ok button is pressed and text is not empty ...
+            if (theResult.buttonIndex == 1 && theResult.input1 !== '') {
+              //Prepares a task item addition in the Firebase database
+              const newTaskRef = this.taskList.push({ id: '', title: theResult.input1, status: 'open' });
+              //Updates the remote database
+              newTaskRef.update({ id: newTaskRef.key });
+            }
+          }
+        )
+      //If running platform is not native (local browser for example)    
+    } else {
+      let theNewTask: string = prompt("New Task");
+      //If there is text to insert ...
+      if (theNewTask != undefined && theNewTask !== '') {
+        //Prepares a task item addition in the Firebase database
+        const newTaskRef = this.taskList.push({ id: '', title: theNewTask, status: 'open' });
+        //Updates the remote database
+        newTaskRef.update({ id: newTaskRef.key });
+      }
     }
   }
 
@@ -43,6 +66,8 @@ export class TaskListPage {
   markAsDone(slidingItem: ItemSliding, task: Task) {
     //Update status property of the task
     task.status = "done";
+    //Updates the task record in the database
+    this.taskList.update(task.id, task)
     //Close the sliding item component
     setTimeout(() => { slidingItem.close(); }, 1);
   }
@@ -51,11 +76,8 @@ export class TaskListPage {
   removeTask(slidingItem: ItemSliding, task: Task) {
     //Update status property of the task
     task.status = "removed";
-    let index = this.tasks.indexOf(task);
-    if (index > -1) {
-      //Removes the task from the array at a specific position
-      this.tasks.splice(index, 1);
-    }
+    //Removes the task record in the database
+    this.taskList.remove(task.id);
     //Close the sliding item component
     setTimeout(() => { slidingItem.close(); }, 1);
   }
